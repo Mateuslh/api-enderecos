@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/estado")
 public class EstadoController {
@@ -16,8 +18,13 @@ public class EstadoController {
     @Autowired
     private EstadoService estadoService;
 
+    @GetMapping("/nonpaged")
+    public ResponseEntity<List<Estado>> getAll() {
+        return ResponseEntity.ok(estadoService.findAll());
+    }
+
     @GetMapping
-    public ResponseEntity<Page<Estado>> get(Pageable pageable) {
+    public ResponseEntity<Page<Estado>> getPaginated(Pageable pageable) {
         return ResponseEntity.ok(estadoService.findAll(pageable));
     }
 
@@ -33,13 +40,13 @@ public class EstadoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCidade(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         estadoService.deleteById(id);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Estado> updateCidade(@PathVariable Long id, @RequestBody Estado estado) {
+    public ResponseEntity<Estado> update(@PathVariable Long id, @RequestBody Estado estado) {
         Estado estadoAtualizado = estadoService.update(id, estado);
         return ResponseEntity.ok(estadoAtualizado);
     }

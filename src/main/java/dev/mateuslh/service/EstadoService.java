@@ -9,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class EstadoService {
     @Autowired
@@ -26,6 +28,10 @@ public class EstadoService {
 
     public Page<Estado> findAll(Pageable pageable) {
         return estadoRepository.findAll(pageable);
+    }
+
+    public List<Estado> findAll() {
+        return estadoRepository.findAll();
     }
 
     public Estado save(Estado estado) {

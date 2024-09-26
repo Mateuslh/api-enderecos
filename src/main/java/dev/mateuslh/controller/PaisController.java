@@ -9,36 +9,43 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/pais")
 public class PaisController {
     @Autowired
     private PaisService paisService;
 
+    @GetMapping("/nonpaged")
+    public ResponseEntity<List<Pais>> getAll() {
+        return ResponseEntity.ok(paisService.findAll());
+    }
+
     @GetMapping
-    public ResponseEntity<Page<Pais>> getPais(Pageable pageable) {
+    public ResponseEntity<Page<Pais>> getPaginated(Pageable pageable) {
         return ResponseEntity.ok(paisService.findAll(pageable));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Pais> getPaisById(@PathVariable Long id) {
+    public ResponseEntity<Pais> getById(@PathVariable Long id) {
         return ResponseEntity.ok(paisService.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<Pais> createPais(@RequestBody Pais pais) {
+    public ResponseEntity<Pais> create(@RequestBody Pais pais) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(paisService.save(pais));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePais(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         paisService.deleteById(id);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Pais> updateCidade(@PathVariable Long id, @RequestBody Pais pais) {
+    public ResponseEntity<Pais> update(@PathVariable Long id, @RequestBody Pais pais) {
         Pais paisAtualizado = paisService.update(id, pais);
         return ResponseEntity.ok(paisAtualizado);
     }
